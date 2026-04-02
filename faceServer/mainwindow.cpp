@@ -1,0 +1,269 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "regauditdialog.h"
+#include <QDebug>
+#include <QListWidgetItem>
+#include <QPushButton>
+#include <QHostAddress>
+#include <QNetworkInterface>
+#include <QDir>
+#include <QFile>
+#include <QHttpMultiPart>
+#include <QHttpMultiPart>
+#include <QHttpPart>
+#include <QNetworkRequest>
+#include <QUrlQuery>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QMessageBox>
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+     connect(&myManager,SIGNAL(finished(QNetworkReply *)),this,SLOT(fun(QNetworkReply *)));
+    this->setWindowTitle("强强科技注册后台服务器");
+
+    tcpserver = new QTcpServer(this);
+    networkManager = new QNetworkAccessManager(this); // 初始化网络管理器
+
+    // 监听任意IPv4地址，避免硬编码IP导致换电脑后无法启动
+    if (!tcpserver->listen(QHostAddress::AnyIPv4, 20000)) {
+        qDebug() << "服务器启动失败！";
+    } else {
+        qDebug() << "服务器启动成功，监听端口 20000";
+    }
+    
+    connect(tcpserver, &QTcpServer::newConnection, this, &MainWindow::newClientLink);
+}
+
+MainWindow::~MainWindow()
+{
+    tcpserver->close();
+    delete ui;
+}
+
+void MainWindow::newClientLink()
+{
+    QTcpSocket *sock = tcpserver->nextPendingConnection();
+    clientList.append(sock);
+
+    QString ip = sock->peerAddress().toString();
+    quint16 port = sock->peerPort();
+    qDebug() << "新客户端连接:" << ip << port;
+
+    connect(sock, &QTcpSocket::readyRead, this, &MainWindow::recvClientMsg);
+
+    // 客户端断开
+    connect(sock, &QTcpSocket::disconnected, this, [=]() {
+        clientList.removeOne(sock);
+        bufferMap.remove(sock); // 清理该客户端的缓存残余，防止内存泄漏
+        sock->deleteLater();
+        qDebug() << "客户端断开:" << ip << port;
+    });
+}
+
+void MainWindow::recvClientMsg()
+{
+    QTcpSocket *sock = qobject_cast<QTcpSocket*>(sender());
+    if (!sock) return;
+
+    // 1. 接收到的网络流追加到该客户端专属的缓冲区 (解决半包/拆包问题)
+    bufferMap[sock].append(sock->readAll());
+
+    // 2. 按照分隔符 '\n' 循环解粘包。如果找不到 '\n'，说明一张大图片还没传完，此函数会直接返回，等下次网络包来继续拼
+    while (bufferMap[sock].contains('\n'))
+    {
+        int index = bufferMap[sock].indexOf('\n');
+        QByteArray packet = bufferMap[sock].left(index); // 提取出完整的一包
+        bufferMap[sock].remove(0, index + 1);            // 删掉取完的数据以及 \n
+
+        QString str = QString::fromUtf8(packet);
+        QStringList msglist = str.split("@");
+
+        // 格式检查，防崩溃
+        if (msglist.isEmpty()) continue;
+
+        // 这里判断 size >= 5 是因为有了 Base64：reg@姓名@电话@身份证@Base64长字符串
+        if (msglist.at(0) == "reg" && msglist.size() >= 5)
+        {
+            QString nameStr = msglist.at(1);
+            QString phoneStr = msglist.at(2);
+            QString idcarStr = msglist.at(3);
+            QString base64Image = msglist.at(4);
+
+            QString ip = sock->peerAddress().toString();
+            if (ip.startsWith("::ffff:")) ip = ip.mid(7);
+            QString port = QString::number(sock->peerPort());
+
+            // --- 解决图片保存需求 ---
+            QString dirPath = "D:/share/Face_Recognition_Attendance_System/faceServer/image";
+            QDir dir;
+            if (!dir.exists(dirPath)) {
+                dir.mkpath(dirPath); // 自动创建不存在的路径
+            }
+
+            // 使用“姓名_电话.jpg”作为文件名保存以防止重名覆盖
+            QString imgPath = QString("%1/%2_%3.jpg").arg(dirPath).arg(nameStr).arg(phoneStr);
+            QFile file(imgPath);
+            QByteArray imgBytes = QByteArray::fromBase64(base64Image.toUtf8());
+
+            if (file.open(QIODevice::WriteOnly)) {
+                file.write(imgBytes);
+                file.close();
+                qDebug() << "图片保存成功！路径：" << imgPath;
+            } else {
+                qDebug() << "图片保存失败，无法打开文件：" << imgPath;
+            }
+
+            // 🌟 收到图片后触发API接口上传照片和身份证号，并在回调中提取 similarity！
+            // 🌟 收到图片后触发API接口上传照片和身份证号，并在回调中提取 similarity！
+            uploadToApi(nameStr, imgBytes, idcarStr, [=](double similarity) {
+                // 这个大括号里的代码，就是阿里云响应成功后才会执行的代码！
+                // 将相似度直接存储在按钮的属性中，方便点击时提取判断
+//                btn->setProperty("similarity", similarity);
+                // 展示在按钮的文字上
+//                btn->setText(btn->text() + QString(" | 相似度: %1%").arg(similarity));
+            });
+
+            QString showText = QString("【新员工】IP:%1 端口:%2 | 姓名:%3  电话:%4  身份证:%5")
+                    .arg(ip)
+                    .arg(port)
+                    .arg(nameStr)
+                    .arg(phoneStr)
+                    .arg(idcarStr);
+
+            QPushButton *btn = new QPushButton(showText);
+            btn->setFixedHeight(40);
+            btn->setStyleSheet(R"(
+                QPushButton {
+                    text-align: left;
+                    padding-left: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    background: #fff;
+                }
+            )");
+
+            QListWidgetItem *item = new QListWidgetItem();
+            item->setSizeHint(QSize(0, 40));
+            ui->infList->addItem(item);
+            ui->infList->setItemWidget(item, btn);
+            ui->infList->scrollToBottom();
+
+            // 点击按钮 → 弹窗 + 发送结果
+            connect(btn, &QPushButton::clicked, this, [this, ip, port, item, btn, nameStr, phoneStr, idcarStr]() {
+                
+                // 提取API传回绑定的相似度
+                double similarity = btn->property("similarity").toDouble();
+                
+                // 【核心新增需求】如果相似度低于 80 分（或者没有成功获取为 0分），则强制弹窗警告
+                if (similarity < 80.0) {
+                    QMessageBox::warning(this, "⚠️ 安全警告", 
+                        QString("注意！该员工（%1）提交的人脸与身份证相似度极低：\n"
+                                "相似度仅为：%2%\n\n"
+                                "请后台管理员人工仔细审核！").arg(nameStr).arg(similarity));
+                }
+
+                RegAuditDialog d(this);
+                d.ip = ip;
+                d.port = port;
+                d.exec();
+
+                QString replyMsg = d.isAgree ? "reg@0k@注册成功" : QString("reg@no@%1").arg(d.refuseReason.isEmpty() ? "注册失败" : d.refuseReason);
+                
+                // 注册成功后将员工信息加入员工列表
+                if(d.isAgree)
+                {
+                   QString employeeInformation = QString("姓名:%1  电话:%2  身份证:%3")
+                                                 .arg(nameStr)
+                                                 .arg(phoneStr)
+                                                 .arg(idcarStr);
+                   ui->listWidget->addItem(employeeInformation);
+                }
+
+                for (QTcpSocket *c : clientList) {
+                    QString pip = c->peerAddress().toString();
+                    if (pip.startsWith("::ffff:")) pip = pip.mid(7);
+                    if (pip == ip && QString::number(c->peerPort()) == port) {
+                        c->write(replyMsg.toUtf8());
+                        c->flush();
+                        break;
+                    }
+                }
+
+                int row = ui->infList->row(item);
+                ui->infList->takeItem(row);
+                delete item;
+                btn->deleteLater(); 
+            });
+        }
+    }
+}
+
+void MainWindow::uploadToApi(const QString &name, const QByteArray &imageBytes, QString &idcar, std::function<void(double)> callback)
+{
+    //供应商：杭州快证签科技有限公司 (如果是这家的话，请核对API路径和参数)
+    QUrl myUrl("http://zfa.market.alicloudapi.com/efficient/idfaceIdentity");
+
+    QNetworkRequest myRequest(myUrl);
+    QString appCode = "1508ca6717a346969de5ca50a0edf269";
+
+    // 阿里云的 Authorization 必须以 "APPCODE " 开头！(注意有个空格)
+    myRequest.setRawHeader("Authorization", ("APPCODE " + appCode).toUtf8());
+    myRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded; charset=UTF-8");
+
+    // QUrlQuery表示POST请求的查询条件
+    QUrlQuery postData;
+
+    // ⚠️ 极其重要的修复：根据你刚发的阿里云接口文档，参数名必须严格照着文档写！
+    postData.addQueryItem("number", idcar); // 文档中叫 number，不是 idcard
+    postData.addQueryItem("name", name);    // 文档中叫 name
+    
+    // ⚠️ 文档里说直接传base64，并且字段名叫做 base64Str
+    QString base64String = QString::fromUtf8(imageBytes.toBase64());
+    postData.addQueryItem("base64Str", QUrl::toPercentEncoding(base64String));
+
+    // 使用 myManager 发送网络请求，并且把结果的信号槽连接好，这样才能触发你的 fun() 打印应答！
+    QNetworkReply *reply = myManager.post(myRequest, postData.query(QUrl::FullyEncoded).toUtf8());
+
+    // 使用 Lambda 回调代替独立的 fun() 槽函数
+    connect(reply, &QNetworkReply::finished, this, [this, reply, callback]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray buf = reply->readAll();
+            qDebug() << "✨[API 响应成功]：" << QString::fromUtf8(buf);
+            
+            // 解析返回的 JSON，获取 similarity
+            QJsonDocument doc = QJsonDocument::fromJson(buf);
+            if(doc.isObject()) {
+                QJsonObject root = doc.object();
+                double similarity = 0.0;
+                
+                // 根据具体厂商返回的 JSON 结构，这里假设相似度在根节点或者 data 节点里。
+                // 如果在 { "data": { "similarity": 88.5 } }
+                if(root.contains("data") && root["data"].isObject()) {
+                    QJsonObject data = root["data"].toObject();
+                    if(data.contains("similarity")) {
+                        similarity = data["similarity"].toDouble();
+                    }
+                } else if(root.contains("similarity")) {
+                    similarity = root["similarity"].toDouble();
+                }
+                
+                // 将该值传回给前面的调用者
+                if(callback) { callback(similarity); }
+            }
+        } else {
+            qDebug() << "❌[API 响应失败] 错误状态码：" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
+                     << "原因：" << reply->errorString();
+            qDebug() << "服务器返回正文：" << QString::fromUtf8(reply->readAll());
+            
+            // 即使失败，也可以为了容错传回一个 0
+            if(callback) { callback(0.0); }
+        }
+        reply->deleteLater();
+    });
+}
+
