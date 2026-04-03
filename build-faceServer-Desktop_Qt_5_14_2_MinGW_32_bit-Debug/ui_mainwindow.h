@@ -41,7 +41,6 @@ public:
     QLabel *label_2;
     QSpacerItem *horizontalSpacer_2;
     QListWidget *listWidget;
-    QSpacerItem *horizontalSpacer_5;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_3;
     QSpacerItem *horizontalSpacer_3;
@@ -117,10 +116,6 @@ public:
 
 
         horizontalLayout_4->addLayout(verticalLayout);
-
-        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_4->addItem(horizontalSpacer_5);
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));

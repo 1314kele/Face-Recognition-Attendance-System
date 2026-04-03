@@ -250,6 +250,7 @@ Makefile: ../faceServer/faceServer.pro ../../../D2/QT/5.14.2/mingw73_32/mkspecs/
 		../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Widgets.prl \
 		../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Gui.prl \
 		../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Network.prl \
+		../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Sql.prl \
 		../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Core.prl \
 		../../../D2/QT/5.14.2/mingw73_32/lib/qtmain.prl \
 		../../../D2/QT/5.14.2/mingw73_32/mkspecs/features/build_pass.prf
@@ -434,6 +435,7 @@ Makefile: ../faceServer/faceServer.pro ../../../D2/QT/5.14.2/mingw73_32/mkspecs/
 ../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Widgets.prl:
 ../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Gui.prl:
 ../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Network.prl:
+../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Sql.prl:
 ../../../D2/QT/5.14.2/mingw73_32/lib/Qt5Core.prl:
 ../../../D2/QT/5.14.2/mingw73_32/lib/qtmain.prl:
 ../../../D2/QT/5.14.2/mingw73_32/mkspecs/features/build_pass.prf:

@@ -10,6 +10,9 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <functional>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,6 +29,7 @@ public:
 private slots:
     void newClientLink();        // 新客户端连接
     void recvClientMsg();        // 接收客户端消息
+    void loadEmployeeList();     // 新增加载或刷新员工列表函数
     // void fun(QNetworkReply *rep); // 删掉独立的 fun()，改用 Lambda 回调直接处理，方便传参
     
 private:
@@ -44,6 +48,8 @@ private:
     // 网络请求管理器，用于向API发送HTTP/POST请求
     QNetworkAccessManager *networkManager;
     QNetworkAccessManager myManager;
+
+    QSqlDatabase database;
 };
 
 #endif // MAINWINDOW_H
