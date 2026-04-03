@@ -23,7 +23,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-     connect(&myManager,SIGNAL(finished(QNetworkReply *)),this,SLOT(fun(QNetworkReply *)));
+
+    //初始化人脸识别引擎对象
+     static ModelSetting FD_model("D:/D2/OpenCv/SeetaFace/bin/model/fd_2_00.dat",SEETA_DEVICE_AUTO);
+     static ModelSetting PD_model("D:/D2/OpenCv/SeetaFace/bin/model/pd_2_00_pts5.dat",SEETA_DEVICE_AUTO);
+     static ModelSetting FR_model("D:/D2/OpenCv/SeetaFace/bin/model/fr_2_10.dat",SEETA_DEVICE_AUTO);
+     engin=new FaceEngine(FD_model, PD_model, FR_model);
+
+
+
+    connect(&myManager,SIGNAL(finished(QNetworkReply *)),this,SLOT(fun(QNetworkReply *)));
     this->setWindowTitle("强强科技注册后台服务器");
 
     tcpserver = new QTcpServer(this);
@@ -104,12 +113,14 @@ void MainWindow::loadEmployeeList()
 
     // 查询所有员工数据 (查询字段需匹配建表结构 name, phone 作为电话, idcar)
     QSqlQuery query(database);
-    QString sql = "SELECT name, phone, idcar FROM employeetable";
+    QString sql = "SELECT name, phone, idcar, photoPath FROM employeetable";
+    engin->Clear();
     if (query.exec(sql)) {
         while (query.next()) {
             QString nameStr = query.value(0).toString();
             QString phoneStr = query.value(1).toString(); // 数据库的"phone"存的是电话号码
             QString idcarStr = query.value(2).toString();
+           // QString photoStr = query.value(3).toString();
 
             // 拼接要在列表里展示的格式
             QString employeeInformation = QString("姓名:%1  电话:%2  身份证:%3")
@@ -117,11 +128,42 @@ void MainWindow::loadEmployeeList()
                                               .arg(phoneStr)
                                               .arg(idcarStr);
             ui->listWidget->addItem(employeeInformation);
+
+
+            // 取出路径
+                    QString imgPath = query.value(3).toString();
+
+                    // 用OpenCV读取图片
+                    cv::Mat mat = cv::imread(imgPath.toLocal8Bit().data());
+                    if (mat.empty()) {
+                        qDebug() << "图片不存在：" << imgPath;
+                        continue;
+                    }
+
+                    // 转SeetaImageData（深拷贝，不崩溃）
+                    SeetaImageData data;
+                    data.width = mat.cols;
+                    data.height = mat.rows;
+                    data.channels = mat.channels();
+                    data.data = new unsigned char[data.width * data.height * data.channels];
+                    memcpy(data.data, mat.data, data.width * data.height * data.channels);
+
+                    // 注册到人脸引擎
+                    int64_t id = engin->Register(data);
+
+                    // 释放内存
+                    delete[] data.data;
+                    qDebug()<<id;
+
         }
         qDebug() << "员工列表刷新成功！";
-    } else {
+    }
+    else
+    {
         qDebug() << "查询员工列表失败:" << query.lastError().text();
     }
+
+
 }
 
 void MainWindow::newClientLink()
@@ -164,6 +206,70 @@ void MainWindow::recvClientMsg()
 
         // 格式检查，防崩溃
         if (msglist.isEmpty()) continue;
+
+        //接收到打卡信息
+        if(msglist.at(0)=="clockin" && msglist.size() >= 2)
+        {
+            // 1. 获取收到的 Base64 图片数据
+            QString base64Image = msglist.at(1);
+
+            // --------------------------
+            // 关键：Base64 直接转 OpenCV 的 Mat（不存文件）
+            // --------------------------
+            QByteArray imgBytes = QByteArray::fromBase64(base64Image.toUtf8());
+            QImage img;
+            img.loadFromData(imgBytes);
+
+            // QImage 转 cv::Mat
+            cv::Mat destData;
+            if (img.format() == QImage::Format_RGB888) {
+                destData = cv::Mat(img.height(), img.width(), CV_8UC3, (uchar*)img.bits(), img.bytesPerLine());
+                cv::cvtColor(destData, destData, cv::COLOR_RGB2BGR);
+            } else {
+                destData = cv::Mat(img.height(), img.width(), CV_8UC4, (uchar*)img.bits(), img.bytesPerLine());
+                cv::cvtColor(destData, destData, cv::COLOR_BGRA2BGR);
+            }
+
+            // 判断图片是否有效
+            if (destData.empty()) {
+                qDebug() << "Base64 转图片失败！";
+                return;
+            }
+
+            // 2. 转 SeetaFace 格式（深拷贝，不崩溃）
+            SeetaImageData seetaData;
+            seetaData.width = destData.cols;
+            seetaData.height = destData.rows;
+            seetaData.channels = destData.channels();
+
+            // 必须深拷贝！！！不能直接 = destData.data
+            seetaData.data = new uint8_t[seetaData.width * seetaData.height * seetaData.channels];
+            memcpy(seetaData.data, destData.data, seetaData.width * seetaData.height * seetaData.channels);
+
+            // 3. 执行人脸识别
+            int64_t index;
+            float similarityopencv;
+            int ret = engin->QueryTop(seetaData, 1, &index, &similarityopencv);
+
+            // 用完立即释放内存
+            delete[] seetaData.data;
+
+            // 4. 识别结果
+            if (ret < 0) {
+                qDebug() << "识别失败";
+                sock->write("clockin@NO\n");
+            } else {
+                qDebug() << "识别结果！相似度：" << similarityopencv << " ID：" << index;
+                if (similarityopencv > 0.75) {
+                    qDebug() << "打卡成功";
+                    sock->write("clockin@ok\n");
+                } else {
+                    qDebug() << "相似度过低，打卡失败";
+                    sock->write("clock@no\n");
+                }
+            }
+            sock->flush();
+        }
 
         // 这里判断 size >= 5 是因为有了 Base64：reg@姓名@电话@身份证@Base64长字符串
         if (msglist.at(0) == "reg" && msglist.size() >= 5)
@@ -254,9 +360,8 @@ void MainWindow::recvClientMsg()
                 d.port = port;
                 d.exec();
 
-                QString replyMsg = d.isAgree ? "reg@0k@注册成功" : QString("reg@no@%1").arg(d.refuseReason.isEmpty() ? "注册失败" : d.refuseReason);
+                QString replyMsg = d.isAgree ? "reg@ok@注册成功" : QString("reg@no@%1").arg(d.refuseReason.isEmpty() ? "注册失败" : d.refuseReason);
                 
-
                 // 注册成功后将员工信息加入员工列表
                 if(d.isAgree)
                 {
@@ -287,10 +392,10 @@ void MainWindow::recvClientMsg()
                     }
                     qDebug() << "表创建成功/已存在";
 
-                    // 4. 拼接图片路径（修复后缀 ,jpg → .jpg）
+                    // 4. 拼接图片路径
                     QString photoPath = QString("D:/share/Face_Recognition_Attendance_System/faceServer/image/%1_%2.jpg").arg(nameStr).arg(phoneStr);
 
-                    // 5. 插入数据（修复表名：booktable → employeetable）
+                    // 5. 插入数据
                     // 推荐使用绑定参数，安全不报错
                     query.prepare("INSERT INTO employeetable (name, phone, idcar, photoPath) VALUES (?, ?, ?, ?)");
                     query.addBindValue(nameStr);
@@ -309,12 +414,6 @@ void MainWindow::recvClientMsg()
 
                     // 注册成功插入数据库后，实时刷新 UI 列表展现
                     loadEmployeeList();
-
-//                   QString employeeInformation = QString("姓名:%1  电话:%2  身份证:%3")
-//                                                 .arg(nameStr)
-//                                                 .arg(phoneStr)
-//                                                 .arg(idcarStr);
-//                   ui->listWidget->addItem(employeeInformation);
                 }
 
                 for (QTcpSocket *c : clientList) {
@@ -406,3 +505,10 @@ void MainWindow::uploadToApi(const QString &name, const QByteArray &imageBytes, 
     });
 }
 
+//点击管理员按钮后跳转管理员界面，本页面隐藏
+void MainWindow::on_pushButton_clicked()
+{
+    this->hide();
+    adminwindow *admin=new adminwindow(this);
+    admin->show();
+}

@@ -88,9 +88,21 @@ void MainWindow::showPhoto(QString path)
 //注册发送消息给服务器
 void MainWindow::on_regbt_clicked()
 {
+    //判断消息框是否为空
+    if(ui->regname->text().isEmpty() || ui->regphone->text().isEmpty() || ui->regidcar->text().isEmpty() )
+    {
+        QMessageBox::warning(this, "提示", "请输入完整的用户信息！");
+         return;
+    }
     QString name=ui->regname->text();
     QString phone=ui->regphone->text(); // 这是一个手机号，修改了原代码里易混淆的photo命名
     QString idcar=ui->regidcar->text();
+    //判断手机号和身份证号是否符合长度要求
+    if(name.size()!=11 && idcar.size()!=18)
+    {
+       QMessageBox::warning(this, "提示", "手机号或者身份证不合规！");
+        return;
+    }
     if (ui->labelImage->pixmap() == nullptr || ui->labelImage->pixmap()->isNull())
     {
         // 空的 → 没有图片
@@ -132,4 +144,48 @@ void MainWindow::rvrecvSeerMsg()
             QMessageBox::warning(this, "注册失败", msglist.at(2));
         }
      }
+
+    if(msglist.at(0)=="clockin")
+    {
+        if(msglist.at(1)=="ok")//注册成功
+          {
+           QMessageBox::information(this, "打卡结果", "打卡成功");
+         }
+        else if(msglist.at(1)=="NO")
+        {
+           QMessageBox::warning(this, "打卡结果","请上传人脸照片");
+        }
+        else
+         {
+          QMessageBox::warning(this, "打卡结果","打卡失败");
+        }
+    }
+}
+
+
+//打卡按钮响应函数
+void MainWindow::on_pushButton_clicked()
+{
+    //判断是否上传了照片
+    if (ui->labelImage->pixmap() == nullptr || ui->labelImage->pixmap()->isNull())
+      {
+          // 空的 → 没有图片
+          QMessageBox::warning(this, "提示", "请先上传员工照片！");
+          return;
+      }
+      else
+      {
+          // 2. 将图片转换为 Base64 编码的字符串（文本形式的图片数据）
+          QByteArray imageBytes;
+          QBuffer buffer(&imageBytes);
+          buffer.open(QIODevice::WriteOnly);
+          // 这里以 JPG 格式提取并压缩写入 buffer（90是压缩质量
+          ui->labelImage->pixmap()->toImage().save(&buffer, "JPG", 70);
+          QString base64Image = QString(imageBytes.toBase64()); // 转成 Base64 字符
+
+          // 3. 将图片数据一并打包到发送的字符串中。格式变为 reg@姓名@手机号@身份证@照片Base64数据
+          // 注意：这样拼接之后，字符串会变得非常大
+          QString msg = QString("clockin@%1\n").arg(base64Image);
+          tcpsock->write(msg.toUtf8());
+      }
 }

@@ -16,10 +16,10 @@ CXX           = g++
 DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DMINGW_HAS_SECURE_API=1 -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -fno-keep-inline-dllexport -O2 -Wall -Wextra -Wextra $(DEFINES)
 CXXFLAGS      = -fno-keep-inline-dllexport -O2 -std=gnu++11 -Wall -Wextra -Wextra -fexceptions -mthreads $(DEFINES)
-INCPATH       = -I..\faceServer -I. -I..\..\..\D2\QT\5.14.2\mingw73_32\include -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtWidgets -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtGui -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtANGLE -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtNetwork -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtSql -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtCore -Irelease -I. -I..\..\..\D2\QT\5.14.2\mingw73_32\mkspecs\win32-g++ 
+INCPATH       = -I..\faceServer -I. -I..\..\..\D2\OpenCv\SeetaFace\include -I..\..\..\D2\OpenCv\SeetaFace\include\seeta -I..\..\..\D2\OpenCv\opencv452\include -I..\..\..\D2\OpenCv\opencv452\include\opencv2 -I..\..\..\D2\QT\5.14.2\mingw73_32\include -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtWidgets -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtGui -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtANGLE -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtNetwork -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtSql -I..\..\..\D2\QT\5.14.2\mingw73_32\include\QtCore -Irelease -I. -I..\..\..\D2\QT\5.14.2\mingw73_32\mkspecs\win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-s -Wl,-subsystem,windows -mthreads
-LIBS        =        D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Widgets.a D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Gui.a D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Network.a D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Sql.a D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Core.a  -lmingw32 D:\D2\QT\5.14.2\mingw73_32\lib\libqtmain.a -LC:\openssl\lib -LC:\Utils\my_sql\mysql-5.7.25-win32\lib -LC:\Utils\postgresql\pgsql\lib -lshell32 
+LIBS        =        -LD:\D2\OpenCv\opencv452\x64\mingw\lib -lopencv_core452 -lopencv_imgproc452 -lopencv_imgcodecs452 -lopencv_highgui452 -lopencv_videoio452 -LD:\D2\OpenCv\SeetaFace\lib -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaNet -lSeetaQualityAssessor D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Widgets.a D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Gui.a D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Network.a D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Sql.a D:\D2\QT\5.14.2\mingw73_32\lib\libQt5Core.a  -lmingw32 D:\D2\QT\5.14.2\mingw73_32\lib\libqtmain.a -LC:\openssl\lib -LC:\Utils\my_sql\mysql-5.7.25-win32\lib -LC:\Utils\postgresql\pgsql\lib -lshell32 
 QMAKE         = D:\D2\QT\5.14.2\mingw73_32\bin\qmake.exe
 DEL_FILE      = del
 CHK_DIR_EXISTS= if not exist
@@ -264,9 +264,123 @@ release/moc_mainwindow.cpp: ../faceServer/mainwindow.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/qtsql-config.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/QSqlQuery \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/qsqlquery.h \
+		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/QSqlError \
+		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/qsqlerror.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceEngine.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceDetector.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/Struct.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/CStruct.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/CFaceInfo.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceLandmarker.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceDatabase.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/Stream.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/CStream.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/opencv.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/opencv_modules.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvdef.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/version.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/cvconfig.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/hal/interface.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cv_cpu_dispatch.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cv_cpu_helper.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/hal/msa_macros.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/fast_math.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/base.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvstd.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvstd_wrapper.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/neon_utils.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/vsx_utils.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/check.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/traits.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/matx.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/saturate.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/types.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/mat.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/bufferpool.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/mat.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/persistence.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/operations.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvstd.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/utility.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/utils/instrumentation.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/utils/tls.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/optim.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/ovx.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/calib3d.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/features2d.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/miniflann.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/defines.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/config.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/affine.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/dnn.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/async.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/version.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/dict.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/layer.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/dnn.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/utils/inference_engine.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/flann_base.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/general.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/matrix.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/params.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/any.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/saving.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/nn_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/result_set.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/all_indices.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/kdtree_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/dynamic_bitset.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/dist.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/heap.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/allocator.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/random.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/kdtree_single_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/kmeans_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/logger.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/composite_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/linear_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/hierarchical_clustering_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/lsh_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/lsh_table.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/autotuned_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/ground_truth.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/index_testing.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/timer.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/sampling.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/highgui.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/imgcodecs.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/videoio.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/imgproc.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/imgproc/segmentation.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/ml.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/ml/ml.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/objdetect.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/objdetect/detection_based_tracker.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/photo.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/warpers.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/warpers.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cuda.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cuda_types.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cuda.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/warpers_inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/matchers.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/motion_estimators.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/util.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/util_inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/camera.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/exposure_compensate.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/seam_finders.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/blenders.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/video.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/video/tracking.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/video/background_segm.hpp \
 		release/moc_predefs.h \
 		../../../D2/QT/5.14.2/mingw73_32/bin/moc.exe
-	D:\D2\QT\5.14.2\mingw73_32\bin\moc.exe $(DEFINES) --include D:/share/Face_Recognition_Attendance_System/build-faceServer-Desktop_Qt_5_14_2_MinGW_32_bit-Debug/release/moc_predefs.h -ID:/D2/QT/5.14.2/mingw73_32/mkspecs/win32-g++ -ID:/share/Face_Recognition_Attendance_System/faceServer -ID:/D2/QT/5.14.2/mingw73_32/include -ID:/D2/QT/5.14.2/mingw73_32/include/QtWidgets -ID:/D2/QT/5.14.2/mingw73_32/include/QtGui -ID:/D2/QT/5.14.2/mingw73_32/include/QtANGLE -ID:/D2/QT/5.14.2/mingw73_32/include/QtNetwork -ID:/D2/QT/5.14.2/mingw73_32/include/QtSql -ID:/D2/QT/5.14.2/mingw73_32/include/QtCore -I. -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++ -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/i686-w64-mingw32 -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/backward -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include-fixed -ID:/D2/QT/Tools/mingw730_32/i686-w64-mingw32/include ..\faceServer\mainwindow.h -o release\moc_mainwindow.cpp
+	D:\D2\QT\5.14.2\mingw73_32\bin\moc.exe $(DEFINES) --include D:/share/Face_Recognition_Attendance_System/build-faceServer-Desktop_Qt_5_14_2_MinGW_32_bit-Debug/release/moc_predefs.h -ID:/D2/QT/5.14.2/mingw73_32/mkspecs/win32-g++ -ID:/share/Face_Recognition_Attendance_System/faceServer -ID:/D2/OpenCv/SeetaFace/include -ID:/D2/OpenCv/SeetaFace/include/seeta -ID:/D2/OpenCv/opencv452/include -ID:/D2/OpenCv/opencv452/include/opencv2 -ID:/D2/QT/5.14.2/mingw73_32/include -ID:/D2/QT/5.14.2/mingw73_32/include/QtWidgets -ID:/D2/QT/5.14.2/mingw73_32/include/QtGui -ID:/D2/QT/5.14.2/mingw73_32/include/QtANGLE -ID:/D2/QT/5.14.2/mingw73_32/include/QtNetwork -ID:/D2/QT/5.14.2/mingw73_32/include/QtSql -ID:/D2/QT/5.14.2/mingw73_32/include/QtCore -I. -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++ -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/i686-w64-mingw32 -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/backward -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include-fixed -ID:/D2/QT/Tools/mingw730_32/i686-w64-mingw32/include ..\faceServer\mainwindow.h -o release\moc_mainwindow.cpp
 
 release/moc_regauditdialog.cpp: ../faceServer/regauditdialog.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtWidgets/QDialog \
@@ -376,7 +490,7 @@ release/moc_regauditdialog.cpp: ../faceServer/regauditdialog.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtGui/qtouchdevice.h \
 		release/moc_predefs.h \
 		../../../D2/QT/5.14.2/mingw73_32/bin/moc.exe
-	D:\D2\QT\5.14.2\mingw73_32\bin\moc.exe $(DEFINES) --include D:/share/Face_Recognition_Attendance_System/build-faceServer-Desktop_Qt_5_14_2_MinGW_32_bit-Debug/release/moc_predefs.h -ID:/D2/QT/5.14.2/mingw73_32/mkspecs/win32-g++ -ID:/share/Face_Recognition_Attendance_System/faceServer -ID:/D2/QT/5.14.2/mingw73_32/include -ID:/D2/QT/5.14.2/mingw73_32/include/QtWidgets -ID:/D2/QT/5.14.2/mingw73_32/include/QtGui -ID:/D2/QT/5.14.2/mingw73_32/include/QtANGLE -ID:/D2/QT/5.14.2/mingw73_32/include/QtNetwork -ID:/D2/QT/5.14.2/mingw73_32/include/QtSql -ID:/D2/QT/5.14.2/mingw73_32/include/QtCore -I. -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++ -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/i686-w64-mingw32 -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/backward -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include-fixed -ID:/D2/QT/Tools/mingw730_32/i686-w64-mingw32/include ..\faceServer\regauditdialog.h -o release\moc_regauditdialog.cpp
+	D:\D2\QT\5.14.2\mingw73_32\bin\moc.exe $(DEFINES) --include D:/share/Face_Recognition_Attendance_System/build-faceServer-Desktop_Qt_5_14_2_MinGW_32_bit-Debug/release/moc_predefs.h -ID:/D2/QT/5.14.2/mingw73_32/mkspecs/win32-g++ -ID:/share/Face_Recognition_Attendance_System/faceServer -ID:/D2/OpenCv/SeetaFace/include -ID:/D2/OpenCv/SeetaFace/include/seeta -ID:/D2/OpenCv/opencv452/include -ID:/D2/OpenCv/opencv452/include/opencv2 -ID:/D2/QT/5.14.2/mingw73_32/include -ID:/D2/QT/5.14.2/mingw73_32/include/QtWidgets -ID:/D2/QT/5.14.2/mingw73_32/include/QtGui -ID:/D2/QT/5.14.2/mingw73_32/include/QtANGLE -ID:/D2/QT/5.14.2/mingw73_32/include/QtNetwork -ID:/D2/QT/5.14.2/mingw73_32/include/QtSql -ID:/D2/QT/5.14.2/mingw73_32/include/QtCore -I. -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++ -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/i686-w64-mingw32 -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/backward -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include -ID:/D2/QT/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include-fixed -ID:/D2/QT/Tools/mingw730_32/i686-w64-mingw32/include ..\faceServer\regauditdialog.h -o release\moc_regauditdialog.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -555,6 +669,120 @@ release/main.o: ../faceServer/main.cpp ../faceServer/mainwindow.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/qtsql-config.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/QSqlQuery \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/qsqlquery.h \
+		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/QSqlError \
+		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/qsqlerror.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceEngine.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceDetector.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/Struct.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/CStruct.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/CFaceInfo.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceLandmarker.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceDatabase.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/Stream.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/CStream.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/opencv.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/opencv_modules.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvdef.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/version.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/cvconfig.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/hal/interface.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cv_cpu_dispatch.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cv_cpu_helper.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/hal/msa_macros.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/fast_math.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/base.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvstd.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvstd_wrapper.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/neon_utils.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/vsx_utils.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/check.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/traits.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/matx.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/saturate.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/types.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/mat.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/bufferpool.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/mat.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/persistence.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/operations.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvstd.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/utility.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/utils/instrumentation.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/utils/tls.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/optim.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/ovx.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/calib3d.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/features2d.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/miniflann.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/defines.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/config.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/affine.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/dnn.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/async.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/version.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/dict.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/layer.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/dnn.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/utils/inference_engine.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/flann_base.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/general.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/matrix.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/params.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/any.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/saving.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/nn_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/result_set.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/all_indices.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/kdtree_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/dynamic_bitset.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/dist.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/heap.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/allocator.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/random.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/kdtree_single_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/kmeans_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/logger.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/composite_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/linear_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/hierarchical_clustering_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/lsh_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/lsh_table.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/autotuned_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/ground_truth.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/index_testing.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/timer.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/sampling.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/highgui.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/imgcodecs.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/videoio.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/imgproc.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/imgproc/segmentation.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/ml.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/ml/ml.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/objdetect.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/objdetect/detection_based_tracker.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/photo.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/warpers.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/warpers.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cuda.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cuda_types.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cuda.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/warpers_inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/matchers.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/motion_estimators.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/util.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/util_inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/camera.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/exposure_compensate.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/seam_finders.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/blenders.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/video.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/video/tracking.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/video/background_segm.hpp \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtWidgets/QApplication \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtWidgets/qapplication.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtCore/qcoreapplication.h \
@@ -714,7 +942,121 @@ release/mainwindow.o: ../faceServer/mainwindow.cpp ../faceServer/mainwindow.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/qtsql-config.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/QSqlQuery \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/qsqlquery.h \
-		ui_mainwindow.h \
+		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/QSqlError \
+		../../../D2/QT/5.14.2/mingw73_32/include/QtSql/qsqlerror.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceEngine.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceDetector.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/Struct.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/CStruct.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/CFaceInfo.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceLandmarker.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/FaceDatabase.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/Stream.h \
+		../../../D2/OpenCv/SeetaFace/include/seeta/CStream.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/opencv.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/opencv_modules.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvdef.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/version.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/cvconfig.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/hal/interface.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cv_cpu_dispatch.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cv_cpu_helper.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/hal/msa_macros.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/fast_math.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/base.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvstd.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvstd_wrapper.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/neon_utils.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/vsx_utils.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/check.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/traits.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/matx.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/saturate.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/types.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/mat.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/bufferpool.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/mat.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/persistence.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/operations.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cvstd.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/utility.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/utils/instrumentation.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/utils/tls.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/optim.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/ovx.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/calib3d.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/features2d.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/miniflann.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/defines.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/config.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/affine.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/dnn.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/async.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/version.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/dict.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/layer.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/dnn.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/dnn/utils/inference_engine.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/flann_base.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/general.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/matrix.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/params.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/any.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/saving.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/nn_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/result_set.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/all_indices.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/kdtree_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/dynamic_bitset.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/dist.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/heap.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/allocator.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/random.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/kdtree_single_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/kmeans_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/logger.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/composite_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/linear_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/hierarchical_clustering_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/lsh_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/lsh_table.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/autotuned_index.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/ground_truth.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/index_testing.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/timer.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/flann/sampling.h \
+		../../../D2/OpenCv/opencv452/include/opencv2/highgui.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/imgcodecs.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/videoio.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/imgproc.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/imgproc/segmentation.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/ml.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/ml/ml.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/objdetect.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/objdetect/detection_based_tracker.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/photo.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/warpers.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/warpers.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cuda.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cuda_types.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/core/cuda.inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/warpers_inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/matchers.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/motion_estimators.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/util.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/util_inl.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/camera.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/exposure_compensate.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/seam_finders.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/stitching/detail/blenders.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/video.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/video/tracking.hpp \
+		../../../D2/OpenCv/opencv452/include/opencv2/video/background_segm.hpp \
+		../faceServer/ui_mainwindow.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtWidgets/QApplication \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtWidgets/qapplication.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtCore/qcoreapplication.h \
@@ -893,7 +1235,7 @@ release/regauditdialog.o: ../faceServer/regauditdialog.cpp ../faceServer/regaudi
 		../../../D2/QT/5.14.2/mingw73_32/include/QtCore/qfiledevice.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtGui/qvector2d.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtGui/qtouchdevice.h \
-		ui_regauditdialog.h \
+		../faceServer/ui_regauditdialog.h \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtCore/QVariant \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtWidgets/QApplication \
 		../../../D2/QT/5.14.2/mingw73_32/include/QtWidgets/qapplication.h \

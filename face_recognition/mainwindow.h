@@ -31,6 +31,8 @@ private slots:
     void on_regbt_clicked();
     void rvrecvSeerMsg();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QTcpSocket *tcpsock;

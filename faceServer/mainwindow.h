@@ -14,6 +14,13 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
+#include "FaceEngine.h" //seetaface的头文件
+#include "opencv.hpp" //opencv的头文件
+using namespace seeta;  //seetaface里面的命名空间
+using namespace  cv;  //opencv里面的命名空间
+
+#include "adminwindow.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -32,6 +39,8 @@ private slots:
     void loadEmployeeList();     // 新增加载或刷新员工列表函数
     // void fun(QNetworkReply *rep); // 删掉独立的 fun()，改用 Lambda 回调直接处理，方便传参
     
+    void on_pushButton_clicked();
+
 private:
     // 增加一个 callback 参数，用于接口收到响应时把相似度抛回给前面的代码
     void uploadToApi(const QString &name, const QByteArray &imageBytes, QString &idcar, std::function<void(double)> callback);
@@ -50,6 +59,8 @@ private:
     QNetworkAccessManager myManager;
 
     QSqlDatabase database;
+
+    FaceEngine *engin; //创建人脸识别引擎对象
 };
 
 #endif // MAINWINDOW_H

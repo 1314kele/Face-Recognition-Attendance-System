@@ -15,16 +15,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+#头文件
+INCLUDEPATH +=D:\D2\OpenCv\SeetaFace\include D:\D2\OpenCv\SeetaFace\include\seeta
+INCLUDEPATH +=D:\D2\OpenCv\opencv452\include D:\D2\OpenCv\opencv452\include\opencv2
+#库文件(编译库)
+LIBS += -L"D:/D2/OpenCv/opencv452/x64/mingw/lib" -lopencv_core452 -lopencv_imgproc452 -lopencv_imgcodecs452 -lopencv_highgui452 -lopencv_videoio452
+LIBS += -L"D:/D2/OpenCv/SeetaFace/lib" -lSeetaFaceDetector -lSeetaFaceLandmarker -lSeetaFaceRecognizer -lSeetaNet -lSeetaQualityAssessor
+
+
+
 SOURCES += \
+    adminwindow.cpp \
     main.cpp \
     mainwindow.cpp \
     regauditdialog.cpp
 
 HEADERS += \
+    adminwindow.h \
     mainwindow.h \
     regauditdialog.h
 
 FORMS += \
+    adminwindow.ui \
     mainwindow.ui \
     regauditdialog.ui
 
