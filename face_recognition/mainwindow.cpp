@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QBuffer>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -188,4 +189,47 @@ void MainWindow::on_pushButton_clicked()
           QString msg = QString("clockin@%1\n").arg(base64Image);
           tcpsock->write(msg.toUtf8());
       }
+}
+
+//请假按钮槽函数
+void MainWindow::on_askLeavebt_clicked()
+{
+
+    askLeavewindow *askLeavepage=new askLeavewindow(this);
+
+    // 【新增下面这段】拦截刚才写的那个 sendLeaveData 信号
+        connect(askLeavepage, &askLeavewindow::sendLeaveData, this, [=](QString msg) {
+
+            //判断是否上传了照片
+            if (ui->labelImage->pixmap() == nullptr || ui->labelImage->pixmap()->isNull() || ui->regname->text().isEmpty() || ui->regphone->text().isEmpty())
+              {
+                  // 空的 → 没有图片
+                  QMessageBox::warning(this, "提示", "请先输入员工姓名、手机号、上传员工照片！");
+                  return;
+              }
+              else
+              {
+
+                    this->hide();
+                  // 2. 将图片转换为 Base64 编码的字符串（文本形式的图片数据）
+                  QByteArray imageBytes;
+                  QBuffer buffer(&imageBytes);
+                  buffer.open(QIODevice::WriteOnly);
+                  // 这里以 JPG 格式提取并压缩写入 buffer（90是压缩质量
+                  ui->labelImage->pixmap()->toImage().save(&buffer, "JPG", 70);
+                  QString base64Image = QString(imageBytes.toBase64()); // 转成 Base64 字符
+                    QString MSG = QString("%1@%2@%3@%4\n").arg(msg).arg(base64Image).arg(ui->regname->text()).arg(ui->regphone->text());
+
+                  // 当收到请假页面的数据时，主窗口直接通过 tcp 发给服务器！
+                  if(tcpsock->state() == QAbstractSocket::ConnectedState) {
+                      tcpsock->write(MSG.toUtf8());
+                      tcpsock->flush();
+                  }
+                  //qDebug()<<MSG;
+            }
+
+        });
+
+    askLeavepage->show();
+
 }

@@ -32,11 +32,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void loadEmployeeList();
 
 private slots:
     void newClientLink();        // 新客户端连接
     void recvClientMsg();        // 接收客户端消息
-    void loadEmployeeList();     // 新增加载或刷新员工列表函数
+    //void loadEmployeeList();     // 新增加载或刷新员工列表函数
     // void fun(QNetworkReply *rep); // 删掉独立的 fun()，改用 Lambda 回调直接处理，方便传参
     
     void on_pushButton_clicked();

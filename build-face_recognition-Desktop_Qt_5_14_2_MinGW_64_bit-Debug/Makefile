@@ -223,6 +223,7 @@ Makefile: ../face_recognition/face_recognition.pro ../../../D2/QT/5.14.2/mingw73
 		../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/qt_config.prf \
 		../../../D2/QT/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf \
 		../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf \
 		../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/toolchain.prf \
 		../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/default_pre.prf \
@@ -253,9 +254,9 @@ Makefile: ../face_recognition/face_recognition.pro ../../../D2/QT/5.14.2/mingw73
 		../../../D2/QT/5.14.2/mingw73_64/lib/Qt5Gui.prl \
 		../../../D2/QT/5.14.2/mingw73_64/lib/Qt5Network.prl \
 		../../../D2/QT/5.14.2/mingw73_64/lib/Qt5SerialPort.prl \
+		../../../D2/QT/5.14.2/mingw73_64/lib/Qt5Sql.prl \
 		../../../D2/QT/5.14.2/mingw73_64/lib/Qt5Core.prl \
 		../../../D2/QT/5.14.2/mingw73_64/lib/qtmain.prl \
-		.qmake.stash \
 		../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/build_pass.prf \
 		../face_recognition/image.qrc
 	$(QMAKE) -o Makefile ..\face_recognition\face_recognition.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -412,6 +413,7 @@ Makefile: ../face_recognition/face_recognition.pro ../../../D2/QT/5.14.2/mingw73
 ../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/qt_config.prf:
 ../../../D2/QT/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf:
 ../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf:
 ../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/toolchain.prf:
 ../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/default_pre.prf:
@@ -442,9 +444,9 @@ Makefile: ../face_recognition/face_recognition.pro ../../../D2/QT/5.14.2/mingw73
 ../../../D2/QT/5.14.2/mingw73_64/lib/Qt5Gui.prl:
 ../../../D2/QT/5.14.2/mingw73_64/lib/Qt5Network.prl:
 ../../../D2/QT/5.14.2/mingw73_64/lib/Qt5SerialPort.prl:
+../../../D2/QT/5.14.2/mingw73_64/lib/Qt5Sql.prl:
 ../../../D2/QT/5.14.2/mingw73_64/lib/Qt5Core.prl:
 ../../../D2/QT/5.14.2/mingw73_64/lib/qtmain.prl:
-.qmake.stash:
 ../../../D2/QT/5.14.2/mingw73_64/mkspecs/features/build_pass.prf:
 ../face_recognition/image.qrc:
 qmake: FORCE

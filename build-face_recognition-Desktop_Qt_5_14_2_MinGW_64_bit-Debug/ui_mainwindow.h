@@ -51,6 +51,7 @@ public:
     QPushButton *regbt;
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton;
+    QPushButton *askLeavebt;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -87,7 +88,7 @@ public:
 
         layoutWidget1 = new QWidget(centralwidget);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(430, 120, 341, 231));
+        layoutWidget1->setGeometry(QRect(420, 70, 341, 231));
         verticalLayout_3 = new QVBoxLayout(layoutWidget1);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         verticalLayout_3->setContentsMargins(0, 0, 0, 0);
@@ -108,7 +109,7 @@ public:
 
         layoutWidget2 = new QWidget(centralwidget);
         layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(50, 120, 348, 218));
+        layoutWidget2->setGeometry(QRect(50, 70, 348, 218));
         horizontalLayout_4 = new QHBoxLayout(layoutWidget2);
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
@@ -174,8 +175,12 @@ public:
 
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(430, 350, 341, 41));
+        pushButton->setGeometry(QRect(420, 300, 341, 41));
         pushButton->setFont(font1);
+        askLeavebt = new QPushButton(centralwidget);
+        askLeavebt->setObjectName(QString::fromUtf8("askLeavebt"));
+        askLeavebt->setGeometry(QRect(420, 340, 341, 41));
+        askLeavebt->setFont(font1);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -202,6 +207,7 @@ public:
         regidcar->setPlaceholderText(QCoreApplication::translate("MainWindow", "\350\272\253\344\273\275\350\257\201\357\274\232", nullptr));
         regbt->setText(QCoreApplication::translate("MainWindow", "\346\263\250\345\206\214", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "\346\211\223\345\215\241", nullptr));
+        askLeavebt->setText(QCoreApplication::translate("MainWindow", "\350\257\267\345\201\207", nullptr));
     } // retranslateUi
 
 };

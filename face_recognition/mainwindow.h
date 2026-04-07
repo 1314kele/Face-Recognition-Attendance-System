@@ -12,6 +12,7 @@
 #include <QPixmap>
 #include <QSerialPort>
 #include <QString>
+#include "askleavewindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,6 +33,8 @@ private slots:
     void rvrecvSeerMsg();
 
     void on_pushButton_clicked();
+
+    void on_askLeavebt_clicked();
 
 private:
     Ui::MainWindow *ui;

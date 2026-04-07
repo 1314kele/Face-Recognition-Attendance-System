@@ -1612,28 +1612,17 @@ release/mainwindow.o: ../faceServer/mainwindow.cpp ../faceServer/mainwindow.h \
 		../../../D2/OpenCv/opencv452/include/opencv2/video/tracking.hpp \
 		../../../D2/OpenCv/opencv452/include/opencv2/video/background_segm.hpp \
 		../faceServer/adminwindow.h \
-		../faceServer/ui_mainwindow.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QApplication \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qapplication.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qcoreapplication.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qeventloop.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qdesktopwidget.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qguiapplication.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qinputmethod.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QGridLayout \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qgridlayout.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlayout.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlayoutitem.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qboxlayout.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QHBoxLayout \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QLabel \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlabel.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qframe.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QListWidget \
+		ui_mainwindow.h \
+		../faceServer/regauditdialog.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QDialog \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qdialog.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDebug \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QListWidgetItem \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlistwidget.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlistview.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractitemview.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qframe.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qabstractitemmodel.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qitemselectionmodel.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractitemdelegate.h \
@@ -1646,21 +1635,6 @@ release/mainwindow.o: ../faceServer/mainwindow.cpp ../faceServer/mainwindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qstyle.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qtabbar.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qrubberband.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QMenuBar \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qmenubar.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qmenu.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qaction.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qactiongroup.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QSpacerItem \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QStatusBar \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qstatusbar.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QVBoxLayout \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QWidget \
-		../faceServer/regauditdialog.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QDialog \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qdialog.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDebug \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QListWidgetItem \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QPushButton \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qpushbutton.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
@@ -1791,38 +1765,7 @@ release/regauditdialog.o: ../faceServer/regauditdialog.cpp ../faceServer/regaudi
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qfiledevice.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qvector2d.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtouchdevice.h \
-		../faceServer/ui_regauditdialog.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QVariant \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QApplication \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qapplication.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qcoreapplication.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qeventloop.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qdesktopwidget.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qguiapplication.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qinputmethod.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QGridLayout \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qgridlayout.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlayout.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlayoutitem.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qboxlayout.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QHBoxLayout \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QLabel \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlabel.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qframe.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QPushButton \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qpushbutton.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qicon.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QSpacerItem \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QTextEdit \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qtextedit.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractscrollarea.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextdocument.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextoption.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextcursor.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextformat.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qpen.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QVBoxLayout
+		ui_regauditdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\regauditdialog.o ..\faceServer\regauditdialog.cpp
 
 release/moc_adminwindow.o: release/moc_adminwindow.cpp 

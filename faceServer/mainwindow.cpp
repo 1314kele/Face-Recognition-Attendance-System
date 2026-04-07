@@ -271,6 +271,7 @@ void MainWindow::recvClientMsg()
             sock->flush();
         }
 
+        //接收到注册信息
         // 这里判断 size >= 5 是因为有了 Base64：reg@姓名@电话@身份证@Base64长字符串
         if (msglist.at(0) == "reg" && msglist.size() >= 5)
         {
@@ -432,8 +433,114 @@ void MainWindow::recvClientMsg()
                 btn->deleteLater(); 
             });
         }
-    }
-}
+      //接收到请假消息
+     if(msglist.at(0) == "askleave")
+     {
+
+         // 1. 获取收到的 Base64 图片数据
+                   QString base64Image = msglist.at(3);
+
+                   // --------------------------
+                   // 关键：Base64 直接转 OpenCV 的 Mat（不存文件）
+                   // --------------------------
+                   QByteArray imgBytes = QByteArray::fromBase64(base64Image.toUtf8());
+                   QImage img;
+                   img.loadFromData(imgBytes);
+
+                   // QImage 转 cv::Mat
+                   cv::Mat destData;
+                   if (img.format() == QImage::Format_RGB888) {
+                       destData = cv::Mat(img.height(), img.width(), CV_8UC3, (uchar*)img.bits(), img.bytesPerLine());
+                       cv::cvtColor(destData, destData, cv::COLOR_RGB2BGR);
+                   } else {
+                       destData = cv::Mat(img.height(), img.width(), CV_8UC4, (uchar*)img.bits(), img.bytesPerLine());
+                       cv::cvtColor(destData, destData, cv::COLOR_BGRA2BGR);
+                   }
+
+                   // 判断图片是否有效
+                   if (destData.empty()) {
+                       qDebug() << "Base64 转图片失败！";
+                       return;
+                   }
+
+                   // 2. 转 SeetaFace 格式（深拷贝，不崩溃）
+                   SeetaImageData seetaData;
+                   seetaData.width = destData.cols;
+                   seetaData.height = destData.rows;
+                   seetaData.channels = destData.channels();
+
+                   // 必须深拷贝！！！不能直接 = destData.data
+                   seetaData.data = new uint8_t[seetaData.width * seetaData.height * seetaData.channels];
+                   memcpy(seetaData.data, destData.data, seetaData.width * seetaData.height * seetaData.channels);
+
+                   // 3. 执行人脸识别
+                   int64_t index;
+                   float similarityopencv;
+                   int ret = engin->QueryTop(seetaData, 1, &index, &similarityopencv);
+
+                   // 用完立即释放内存
+                   delete[] seetaData.data;
+
+                   // 4. 识别结果
+                   if (ret < 0) {
+                       qDebug() << "识别失败";
+                       sock->write("askleave@NO\n");
+                   } else {
+                       qDebug() << "请假识别结果！相似度：" << similarityopencv << " ID：" << index;
+                       if (similarityopencv > 0.75) {
+                           qDebug() << "请假成功";
+                           QString askleavename=msglist.at(4);
+                           QString askleavephone=msglist.at(5);
+                           QString startime=msglist.at(1);
+                           QString endtime=msglist.at(2);
+                           QString showText = QString("姓名:%1 电话:%2 | 请假开始时间:%3  请假结束时间:%4")
+                                              .arg(askleavename)
+                                              .arg(askleavephone)
+                                              .arg(startime)
+                                              .arg(endtime);
+
+                                      QPushButton *btn = new QPushButton(showText);
+                                      btn->setFixedHeight(40);
+                                      btn->setStyleSheet(R"(
+                                          QPushButton {
+                                              text-align: left;
+                                              padding-left: 10px;
+                                              border: 1px solid #ccc;
+                                              border-radius: 4px;
+                                              background: #fff;
+                                          }
+                                      )");
+                                      QListWidgetItem *item = new QListWidgetItem();
+                                                 item->setSizeHint(QSize(0, 40));
+                                                 ui->infList->addItem(item);
+                                                 ui->infList->setItemWidget(item, btn);
+                                                 ui->infList->scrollToBottom();
+
+                                                 // 点击按钮 → 弹窗 + 发送结果
+connect(btn, &QPushButton::clicked, this, [this, askleavename, askleavephone, startime, endtime]() {
+
+
+
+
+});
+
+
+                           sock->write("clockin@ok\n");
+                       } else
+                       {
+                           qDebug() << "相似度过低，打卡失败";
+                           sock->write("askleave@no\n");
+                       }
+                   }
+                   sock->flush();
+
+
+               }
+
+     }
+ }
+
+
 
 void MainWindow::uploadToApi(const QString &name, const QByteArray &imageBytes, QString &idcar, std::function<void(double)> callback)
 {

@@ -27,6 +27,8 @@ private slots:
     void on_addbt_clicked();
     void reflushList();
 
+    void on_backbt_clicked();
+
 private:
     Ui::adminwindow *ui;
     QSqlDatabase database;

@@ -166,6 +166,9 @@ void adminwindow::on_findbt_clicked()
     ui->findInfmation->clear();
     ui->findInfmation->setRowCount(0);
 
+    // 2. 设置列数（必须！否则无法添加数据）
+        ui->findInfmation->setColumnCount(4);
+
     QStringList header = {"姓名","手机号","身份证号","图片路径"};
     ui->findInfmation->setHorizontalHeaderLabels(header);
 
@@ -174,10 +177,24 @@ void adminwindow::on_findbt_clicked()
 
     int i=0;
     while(query.next()){
+        // 每循环一次，插入一行
+        ui->findInfmation->insertRow(i);
         ui->findInfmation->setItem(i,0,new QTableWidgetItem(query.value(0).toString()));
         ui->findInfmation->setItem(i,1,new QTableWidgetItem(query.value(1).toString()));
         ui->findInfmation->setItem(i,2,new QTableWidgetItem(query.value(2).toString()));
         ui->findInfmation->setItem(i,3,new QTableWidgetItem(query.value(3).toString()));
         i++;
     }
+}
+
+void adminwindow::on_backbt_clicked()
+{
+    this->close();
+
+    // 获取父窗口（MainWindow），并调用它的刷新函数
+        MainWindow *mainWin = qobject_cast<MainWindow*>(this->parent());
+        if(mainWin) {
+            mainWin->loadEmployeeList(); // 刷新主界面员工列表
+        }
+        parentWidget()->show();
 }
