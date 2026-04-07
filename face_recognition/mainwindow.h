@@ -13,6 +13,7 @@
 #include <QSerialPort>
 #include <QString>
 #include "askleavewindow.h"
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,6 +41,7 @@ private:
     Ui::MainWindow *ui;
     QTcpSocket *tcpsock;
     QString imagePath;
+
 };
 
 #endif // MAINWINDOW_H

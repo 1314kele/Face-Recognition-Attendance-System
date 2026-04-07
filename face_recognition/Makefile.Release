@@ -677,6 +677,40 @@ release/askleavewindow.o: askleavewindow.cpp askleavewindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDate \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qdatetime.h \
 		ui_askleavewindow.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QVariant \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QApplication \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qapplication.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qcoreapplication.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qeventloop.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qdesktopwidget.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qguiapplication.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qinputmethod.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QCalendarWidget \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qcalendarwidget.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QLineEdit \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlineedit.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qframe.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextcursor.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextformat.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qpen.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextoption.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QMenuBar \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qmenubar.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qmenu.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qaction.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qactiongroup.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QPushButton \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qpushbutton.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QStatusBar \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qstatusbar.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QTimeEdit \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qdatetimeedit.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qcalendar.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractspinbox.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qvalidator.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qregularexpression.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QWidget \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDateTime \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\askleavewindow.o askleavewindow.cpp
@@ -812,16 +846,51 @@ release/camerawindow.o: camerawindow.cpp camerawindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimediaWidgets/qtmultimediawidgetdefs.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimedia/qmediabindableinterface.h \
 		ui_camerawindow.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimediaWidgets/QCameraViewfinder \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimediaWidgets/qcameraviewfinder.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimedia/QCameraImageCapture \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimedia/qcameraimagecapture.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimedia/qmediaencodersettings.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QVariant \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QApplication \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qapplication.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qcoreapplication.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qeventloop.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qdesktopwidget.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qguiapplication.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qinputmethod.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QComboBox \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qcombobox.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qstyleoption.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractspinbox.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qvalidator.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qregularexpression.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qslider.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractslider.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qstyle.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qtabbar.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qrubberband.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qframe.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qabstractitemmodel.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QLabel \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlabel.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QMenuBar \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qmenubar.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qmenu.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qaction.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qactiongroup.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QPushButton \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qpushbutton.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QStatusBar \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qstatusbar.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QVBoxLayout \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qboxlayout.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlayout.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlayoutitem.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qgridlayout.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QWidget \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimediaWidgets/QCameraViewfinder \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimediaWidgets/qcameraviewfinder.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimedia/QCameraImageCapture \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimedia/qcameraimagecapture.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtMultimedia/qmediaencodersettings.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDateTime \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qdatetime.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDir \
@@ -1149,10 +1218,43 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		askleavewindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDate \
 		ui_mainwindow.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDir \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QCoreApplication \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QVariant \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QApplication \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qapplication.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qcoreapplication.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qeventloop.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qdesktopwidget.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qguiapplication.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qinputmethod.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QHBoxLayout \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qboxlayout.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlayout.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlayoutitem.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qgridlayout.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QLabel \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlabel.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qframe.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QLineEdit \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qlineedit.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextcursor.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextformat.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qpen.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtGui/qtextoption.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QMenuBar \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qmenubar.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qmenu.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qaction.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qactiongroup.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QPushButton \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qpushbutton.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QSpacerItem \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QStatusBar \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qstatusbar.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QVBoxLayout \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QWidget \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDir \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QCoreApplication \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QBuffer \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qbuffer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o mainwindow.cpp
