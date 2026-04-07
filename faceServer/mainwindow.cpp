@@ -274,10 +274,12 @@ void MainWindow::recvClientMsg()
                     } else {
                         database = QSqlDatabase::addDatabase("QSQLITE");
                     }
+                    //设置数据库路径
                     database.setDatabaseName("D:/share/Face_Recognition_Attendance_System/employeeinformation.db");
                     
                     if (database.open()) {
                         QSqlQuery query(database);
+                        //创建员工打卡记录表
                         query.exec("create table if not exists attendancetable (empid text, date text, intime text, outtime text, status text);");
                         
                         // 查询今天该员工是否打过卡
@@ -497,7 +499,7 @@ void MainWindow::recvClientMsg()
         {
 
             // 1. 获取收到的 Base64 图片数据
-            QString base64Image = msglist.at(3);
+            QString base64Image = msglist.at(4);
 
             // --------------------------
             // 关键：Base64 直接转 OpenCV 的 Mat（不存文件）
@@ -558,16 +560,18 @@ void MainWindow::recvClientMsg()
                         return;
                     }
 
-                    QString askleavename = msglist.at(4);
-                    QString askleavephone = msglist.at(5);
+                    QString askleavename = msglist.at(5);
+                    QString askleavephone = msglist.at(6);
                     QString startime = msglist.at(1);
                     QString endtime = msglist.at(2);
+                    QString leaveType=msglist.at(3);
 
-                    QString showText = QString("姓名:%1 电话:%2 | 请假开始时间:%3  请假结束时间:%4")
+                    QString showText = QString("姓名:%1 电话:%2 | 请假开始时间:%3  请假结束时间:%4 请假类型:%5")
                             .arg(askleavename)
                             .arg(askleavephone)
                             .arg(startime)
-                            .arg(endtime);
+                            .arg(endtime)
+                            .arg(leaveType);
 
                     QPushButton *btn = new QPushButton(showText, this); // 指定父对象，自动回收
                     btn->setFixedHeight(40);
@@ -595,18 +599,52 @@ void MainWindow::recvClientMsg()
 
                         // 2. 【关键】必须调用 exec() 才会显示窗口！
                         d.exec();
-//                        QString replyMsg = d.isAgree ? "askleave@ok@注册成功" : QString("askleave@no@%1").arg(d.refuseReason.isEmpty() ? "注册失败" : d.refuseReason);
+
                         // 3. 根据审核结果回复客户端
+                        QString statusToSave;
+                        QString reasonToSave;
+
                         if (d.isAgree) {
                             qDebug() << "管理员同意请假";
                             sock->write("askleave@ok\n");
+                            statusToSave = "已同意";
                         } else {
                             qDebug() << "管理员拒绝请假";
                             QString reason=QString("askleave@no@%1").arg(d.refuseReason.isEmpty() ? "注册失败" : d.refuseReason);
 
                             sock->write(reason.toUtf8());
+                            statusToSave = "已拒绝";
+                            reasonToSave = d.refuseReason;
                         }
                         sock->flush(); // 立即发送
+
+                        // 将请假详细信息保存到数据库
+                        QSqlDatabase database;
+                        if (QSqlDatabase::contains("qt_sql_default_connection")) {
+                            database = QSqlDatabase::database("qt_sql_default_connection");
+                        } else {
+                            database = QSqlDatabase::addDatabase("QSQLITE");
+                        }
+                        database.setDatabaseName("D:/share/Face_Recognition_Attendance_System/employeeinformation.db");
+
+                        if (database.open()) {
+                            QSqlQuery query(database);
+                            // 创建请假记录表（如果不存在），字段包含完整的展示文本、状态、拒绝原因
+                            query.exec("create table if not exists leave_record_table (show_text text, status text, refuse_reason text);");
+
+                            query.prepare("insert into leave_record_table (show_text, status, refuse_reason) values (:show_text, :status, :refuse_reason)");
+                            query.bindValue(":show_text", showText);
+                            query.bindValue(":status", statusToSave);
+                            query.bindValue(":refuse_reason", reasonToSave);
+
+                            if (!query.exec()) {
+                                qDebug() << "员工请假记录插入数据库失败（Error）:" << query.lastError().text();
+                            } else {
+                                qDebug() << "员工请假记录保存成功！";
+                            }
+                        } else {
+                            qDebug() << "连接数据库失败，未能保存请假记录";
+                        }
 
                         // 4. 审核完成后，从列表移除该项
                         QListWidgetItem* item = ui->infList->itemAt(btn->pos());

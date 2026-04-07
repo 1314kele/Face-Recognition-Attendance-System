@@ -531,6 +531,9 @@ debug/moc_mainwindow.cpp: ../face_recognition/mainwindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QString \
 		../face_recognition/askleavewindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDate \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QPushButton \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qpushbutton.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
 		debug/moc_predefs.h \
 		../../../D2/QT/5.14.2/mingw73_64/bin/moc.exe
 	D:\D2\QT\5.14.2\mingw73_64\bin\moc.exe $(DEFINES) --include D:/share/Face_Recognition_Attendance_System/build-face_recognition-Desktop_Qt_5_14_2_MinGW_64_bit-Debug/debug/moc_predefs.h -ID:/D2/QT/5.14.2/mingw73_64/mkspecs/win32-g++ -ID:/share/Face_Recognition_Attendance_System/face_recognition -ID:/D2/QT/5.14.2/mingw73_64/include -ID:/D2/QT/5.14.2/mingw73_64/include/QtMultimediaWidgets -ID:/D2/QT/5.14.2/mingw73_64/include/QtMultimedia -ID:/D2/QT/5.14.2/mingw73_64/include/QtWidgets -ID:/D2/QT/5.14.2/mingw73_64/include/QtGui -ID:/D2/QT/5.14.2/mingw73_64/include/QtANGLE -ID:/D2/QT/5.14.2/mingw73_64/include/QtNetwork -ID:/D2/QT/5.14.2/mingw73_64/include/QtSerialPort -ID:/D2/QT/5.14.2/mingw73_64/include/QtSql -ID:/D2/QT/5.14.2/mingw73_64/include/QtCore -I. -ID:/D2/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++ -ID:/D2/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32 -ID:/D2/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/backward -ID:/D2/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include -ID:/D2/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed -ID:/D2/QT/Tools/mingw730_64/x86_64-w64-mingw32/include ..\face_recognition\mainwindow.h -o debug\moc_mainwindow.cpp
@@ -677,7 +680,8 @@ debug/askleavewindow.o: ../face_recognition/askleavewindow.cpp ../face_recogniti
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDate \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qdatetime.h \
 		ui_askleavewindow.h \
-		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDateTime
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDateTime \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\askleavewindow.o ..\face_recognition\askleavewindow.cpp
 
 debug/camerawindow.o: ../face_recognition/camerawindow.cpp ../face_recognition/camerawindow.h \
@@ -983,6 +987,9 @@ debug/main.o: ../face_recognition/main.cpp ../face_recognition/mainwindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QString \
 		../face_recognition/askleavewindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDate \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QPushButton \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qpushbutton.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QApplication \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qapplication.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/qcoreapplication.h \
@@ -1147,6 +1154,9 @@ debug/mainwindow.o: ../face_recognition/mainwindow.cpp ../face_recognition/mainw
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QString \
 		../face_recognition/askleavewindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDate \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/QPushButton \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qpushbutton.h \
+		../../../D2/QT/5.14.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
 		ui_mainwindow.h \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QDir \
 		../../../D2/QT/5.14.2/mingw73_64/include/QtCore/QCoreApplication \

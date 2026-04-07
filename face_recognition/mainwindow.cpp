@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     //初始化套接字
     tcpsock=new QTcpSocket(this);
     //绑定
-    tcpsock->bind(QHostAddress("192.168.11.81"),10086);
+    tcpsock->bind(QHostAddress("192.168.11.81"),10000);
     //链接服务器
     tcpsock->connectToHost(QHostAddress("192.168.11.81"),20000);
 
@@ -198,129 +198,17 @@ void MainWindow::on_pushButton_clicked()
     }
     else
     {
-        static int flage=0;
-        // 获取当前系统日期时间,打卡时间
-        QDateTime clockintime = QDateTime::currentDateTime();
+        // 1. 将图片转换为 Base64 编码的字符串（文本形式的图片数据）
+        QByteArray imageBytes;
+        QBuffer buffer(&imageBytes);
+        buffer.open(QIODevice::WriteOnly);
+        // 这里以 JPG 格式提取并压缩写入 buffer
+        ui->labelImage->pixmap()->toImage().save(&buffer, "JPG", 70);
+        QString base64Image = QString(imageBytes.toBase64()); // 转成 Base64 字符
 
-        // 时间1
-        QDateTime  time1= QDateTime::fromString("2026-04-07 09:00:00", "yyyy-MM-dd hh:mm:ss");
-        QDateTime  time2= QDateTime::fromString("2026-04-07 18:00:00", "yyyy-MM-dd hh:mm:ss");
-
-        QTime clockinTime = clockintime.time();
-        QTime goworktime = time1.time();
-        QTime endworktime = time2.time();
-
-
-        if(flage==0 && clockinTime<goworktime)
-        {
-            //上班打卡
-            QMessageBox msg(this);
-            msg.setWindowTitle("提示");
-            msg.setText("上班打卡");
-
-            QAbstractButton *btn1 = msg.addButton("否", QMessageBox::YesRole);
-            QAbstractButton *btn2 = msg.addButton("是", QMessageBox::NoRole);
-            msg.exec();
-            if (msg.clickedButton() == btn1)
-            {
-                msg.close();
-            }
-            if (msg.clickedButton() == btn2)
-            {
-                flage=1;
-            }
-        }
-        else if(flage==0 && clockinTime>=goworktime)
-        {
-            //迟到打卡
-            QMessageBox msg(this);
-            msg.setWindowTitle("提示");
-            msg.setText("迟到打卡");
-
-            QAbstractButton *btn1 = msg.addButton("否", QMessageBox::YesRole);
-            QAbstractButton *btn2 = msg.addButton("是", QMessageBox::NoRole);
-
-            msg.exec();
-
-            if (msg.clickedButton() == btn1)
-            {
-                msg.close();
-            }
-            if (msg.clickedButton() == btn2)
-            {
-                flage=1;
-            }
-        }
-        else if(flage==1)
-        {
-            flage=0;
-            if(clockinTime>=endworktime)
-            {
-                //下班打卡
-                QMessageBox msg(this);
-                msg.setWindowTitle("提示");
-                msg.setText("下班打卡");
-
-                QAbstractButton *btn1 = msg.addButton("否", QMessageBox::YesRole);
-                QAbstractButton *btn2 = msg.addButton("是", QMessageBox::NoRole);
-
-                msg.exec();
-
-                if (msg.clickedButton() == btn1)
-                {
-                    msg.close();
-                }
-                if (msg.clickedButton() == btn2)
-                {
-                    // 早退也发数据
-                    flage=1; // 临时设回1以触发发送，发送完会清0
-                }
-            }
-            if(clockinTime>=goworktime && clockinTime<endworktime)
-            {
-                //早退打卡（修正为正确时间段）
-                QMessageBox msg(this);
-                msg.setWindowTitle("提示");
-                msg.setText("早退打卡");
-
-                QAbstractButton *btn1 = msg.addButton("否", QMessageBox::YesRole);
-                QAbstractButton *btn2 = msg.addButton("是", QMessageBox::NoRole);
-                msg.exec();
-                if (msg.clickedButton() == btn1)
-                {
-                    msg.close();
-                }
-                if (msg.clickedButton() == btn2)
-                {
-                    flage=1; // 临时设回1以触发发送
-                }
-            }
-        }
-
-        // 发送给服务器的部分
-
-        if(flage==1)
-        {
-            // 转成字符串 年-月-日 时:分:秒
-            //            QString timeStr = clockintime.toString("yyyy-MM-dd hh:mm:ss");
-
-            //            qDebug() << "当前系统时间：" << timeStr;
-
-
-            // 2. 将图片转换为 Base64 编码的字符串（文本形式的图片数据）
-            QByteArray imageBytes;
-            QBuffer buffer(&imageBytes);
-            buffer.open(QIODevice::WriteOnly);
-            // 这里以 JPG 格式提取并压缩写入 buffer（90是压缩质量
-            ui->labelImage->pixmap()->toImage().save(&buffer, "JPG", 70);
-            QString base64Image = QString(imageBytes.toBase64()); // 转成 Base64 字符
-
-            // 3. 将图片数据一并打包到发送的字符串中。格式变为 reg@姓名@手机号@身份证@照片Base64数据
-            // 注意：这样拼接之后，字符串会变得非常大
-            QString msg = QString("clockin@%1\n").arg(base64Image);
-            tcpsock->write(msg.toUtf8());
-            flage=0;
-        }
+        // 2. 将图片数据一并打包到发送的字符串中。
+        QString msg = QString("clockin@%1\n").arg(base64Image);
+        tcpsock->write(msg.toUtf8());
     }
 }
 

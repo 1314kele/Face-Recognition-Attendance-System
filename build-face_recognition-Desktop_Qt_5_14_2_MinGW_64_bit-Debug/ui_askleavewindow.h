@@ -12,6 +12,9 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCalendarWidget>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
@@ -28,12 +31,18 @@ public:
     QWidget *centralwidget;
     QCalendarWidget *calendarWidget;
     QPushButton *backbt;
-    QLineEdit *starTimele;
-    QLineEdit *endTimele;
-    QPushButton *applyLeavebt;
-    QPushButton *clearbt1;
-    QPushButton *clearbt2;
     QTimeEdit *timeEdit;
+    QWidget *widget;
+    QGridLayout *gridLayout;
+    QHBoxLayout *horizontalLayout;
+    QLineEdit *starTimele;
+    QPushButton *clearbt1;
+    QHBoxLayout *horizontalLayout_2;
+    QLineEdit *endTimele;
+    QPushButton *clearbt2;
+    QHBoxLayout *horizontalLayout_3;
+    QPushButton *applyLeavebt;
+    QComboBox *comboBox_leaveType;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -41,7 +50,7 @@ public:
     {
         if (askLeavewindow->objectName().isEmpty())
             askLeavewindow->setObjectName(QString::fromUtf8("askLeavewindow"));
-        askLeavewindow->resize(800, 600);
+        askLeavewindow->resize(800, 480);
         centralwidget = new QWidget(askLeavewindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         calendarWidget = new QCalendarWidget(centralwidget);
@@ -50,24 +59,62 @@ public:
         backbt = new QPushButton(centralwidget);
         backbt->setObjectName(QString::fromUtf8("backbt"));
         backbt->setGeometry(QRect(720, 0, 75, 23));
-        starTimele = new QLineEdit(centralwidget);
-        starTimele->setObjectName(QString::fromUtf8("starTimele"));
-        starTimele->setGeometry(QRect(410, 40, 191, 41));
-        endTimele = new QLineEdit(centralwidget);
-        endTimele->setObjectName(QString::fromUtf8("endTimele"));
-        endTimele->setGeometry(QRect(410, 100, 191, 41));
-        applyLeavebt = new QPushButton(centralwidget);
-        applyLeavebt->setObjectName(QString::fromUtf8("applyLeavebt"));
-        applyLeavebt->setGeometry(QRect(460, 170, 75, 23));
-        clearbt1 = new QPushButton(centralwidget);
-        clearbt1->setObjectName(QString::fromUtf8("clearbt1"));
-        clearbt1->setGeometry(QRect(610, 50, 75, 23));
-        clearbt2 = new QPushButton(centralwidget);
-        clearbt2->setObjectName(QString::fromUtf8("clearbt2"));
-        clearbt2->setGeometry(QRect(610, 110, 75, 23));
         timeEdit = new QTimeEdit(centralwidget);
         timeEdit->setObjectName(QString::fromUtf8("timeEdit"));
         timeEdit->setGeometry(QRect(0, 240, 118, 22));
+        widget = new QWidget(centralwidget);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(370, 50, 218, 89));
+        gridLayout = new QGridLayout(widget);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        starTimele = new QLineEdit(widget);
+        starTimele->setObjectName(QString::fromUtf8("starTimele"));
+
+        horizontalLayout->addWidget(starTimele);
+
+        clearbt1 = new QPushButton(widget);
+        clearbt1->setObjectName(QString::fromUtf8("clearbt1"));
+
+        horizontalLayout->addWidget(clearbt1);
+
+
+        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        endTimele = new QLineEdit(widget);
+        endTimele->setObjectName(QString::fromUtf8("endTimele"));
+
+        horizontalLayout_2->addWidget(endTimele);
+
+        clearbt2 = new QPushButton(widget);
+        clearbt2->setObjectName(QString::fromUtf8("clearbt2"));
+
+        horizontalLayout_2->addWidget(clearbt2);
+
+
+        gridLayout->addLayout(horizontalLayout_2, 1, 0, 1, 1);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        applyLeavebt = new QPushButton(widget);
+        applyLeavebt->setObjectName(QString::fromUtf8("applyLeavebt"));
+
+        horizontalLayout_3->addWidget(applyLeavebt);
+
+        comboBox_leaveType = new QComboBox(widget);
+        comboBox_leaveType->setObjectName(QString::fromUtf8("comboBox_leaveType"));
+        comboBox_leaveType->setEditable(false);
+        comboBox_leaveType->setDuplicatesEnabled(false);
+
+        horizontalLayout_3->addWidget(comboBox_leaveType);
+
+
+        gridLayout->addLayout(horizontalLayout_3, 2, 0, 1, 1);
+
         askLeavewindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(askLeavewindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -87,10 +134,10 @@ public:
         askLeavewindow->setWindowTitle(QCoreApplication::translate("askLeavewindow", "MainWindow", nullptr));
         backbt->setText(QCoreApplication::translate("askLeavewindow", "\350\277\224\345\233\236", nullptr));
         starTimele->setPlaceholderText(QCoreApplication::translate("askLeavewindow", "\350\257\267\345\201\207\350\265\267\346\255\242\346\227\266\351\227\264", nullptr));
-        endTimele->setPlaceholderText(QCoreApplication::translate("askLeavewindow", "\346\210\252\346\255\242\346\227\266\351\227\264", nullptr));
-        applyLeavebt->setText(QCoreApplication::translate("askLeavewindow", "\347\224\263\350\257\267\350\257\267\345\201\207", nullptr));
         clearbt1->setText(QCoreApplication::translate("askLeavewindow", "\346\270\205\351\231\244", nullptr));
+        endTimele->setPlaceholderText(QCoreApplication::translate("askLeavewindow", "\346\210\252\346\255\242\346\227\266\351\227\264", nullptr));
         clearbt2->setText(QCoreApplication::translate("askLeavewindow", "\346\270\205\351\231\244", nullptr));
+        applyLeavebt->setText(QCoreApplication::translate("askLeavewindow", "\347\224\263\350\257\267\350\257\267\345\201\207", nullptr));
     } // retranslateUi
 
 };
