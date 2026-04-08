@@ -53,6 +53,10 @@ private:
     QTcpSocket *tcpsock;         // 客户端套接字
     QList<QTcpSocket*> clientList; // 保存所有客户端
     
+    // 用于保存从数据库加载的员工姓名和电话，方便人脸识别后通过ID直接取回
+    QMap<qint64, QString> empNameMap;
+    QMap<qint64, QString> empPhoneMap;
+
     // 用于解决TCP粘包/半包的缓冲区
     QMap<QTcpSocket*, QByteArray> bufferMap;
     // 网络请求管理器，用于向API发送HTTP/POST请求

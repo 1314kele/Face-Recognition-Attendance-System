@@ -9,7 +9,6 @@
 #include <QDir>
 #include <QFile>
 #include <QHttpMultiPart>
-#include <QHttpMultiPart>
 #include <QHttpPart>
 #include <QNetworkRequest>
 #include <QUrlQuery>
@@ -17,6 +16,52 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QMessageBox>
+#include <QTimer>
+#include <QEvent>
+
+class HoverMarqueeFilter : public QObject {
+public:
+    HoverMarqueeFilter(QObject *parent = nullptr) : QObject(parent) {}
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override {
+        QPushButton *btn = qobject_cast<QPushButton*>(watched);
+        if (btn) {
+            if (event->type() == QEvent::Enter) {
+                // start marquee on hover
+                if (btn->property("originalText").isNull()) {
+                    btn->setProperty("originalText", btn->text());
+                    btn->setProperty("scrollPos", 0);
+                    btn->setProperty("scrollText", btn->text() + "          ***          ");
+                }
+                QTimer *timer = btn->findChild<QTimer*>("marqueeTimer");
+                if (!timer) {
+                    timer = new QTimer(btn);
+                    timer->setObjectName("marqueeTimer");
+                    connect(timer, &QTimer::timeout, btn, [btn]() {
+                        QString scrollText = btn->property("scrollText").toString();
+                        if (scrollText.isEmpty()) return;
+                        int pos = btn->property("scrollPos").toInt();
+                        pos = (pos + 1) % scrollText.length();
+                        btn->setProperty("scrollPos", pos);
+                        QString display = scrollText.mid(pos) + scrollText.left(pos);
+                        btn->setText(display);
+                    });
+                }
+                // Only start scrolling if text is likely too long (e.g. > 30 chars), optionally we just scroll all.
+                timer->start(350); // Marquee speed 
+            } else if (event->type() == QEvent::Leave) {
+                QTimer *timer = btn->findChild<QTimer*>("marqueeTimer");
+                if (timer) timer->stop();
+                if (!btn->property("originalText").isNull()) {
+                    btn->setText(btn->property("originalText").toString());
+                }
+            }
+        }
+        return QObject::eventFilter(watched, event);
+    }
+};
+
+static HoverMarqueeFilter *globalMarqueeFilter = nullptr;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -150,10 +195,14 @@ void MainWindow::loadEmployeeList()
 
             // 注册到人脸引擎
             int64_t id = engin->Register(data);
+            
+            // 把映射存进内存，方便查询
+            empNameMap[id] = nameStr;
+            empPhoneMap[id] = phoneStr;
 
             // 释放内存
             delete[] data.data;
-            qDebug()<<id;
+            qDebug()<<"注册人脸库 返回ID:"<<id<<" 姓名:"<<nameStr;
 
         }
         qDebug() << "员工列表刷新成功！";
@@ -281,22 +330,27 @@ void MainWindow::recvClientMsg()
                         QSqlQuery query(database);
                         //创建员工打卡记录表
                         query.exec("create table if not exists attendancetable (empid text, date text, intime text, outtime text, status text);");
-                        
+                        // 尝试添加 name 和 phone 字段（兼容以前建好的表）
+                        query.exec("alter table attendancetable add column name text;");
+                        query.exec("alter table attendancetable add column phone text;");
+
                         // 查询今天该员工是否打过卡
                         query.prepare("select intime, outtime from attendancetable where empid = :empid and date = :date");
                         query.bindValue(":empid", empId);
                         query.bindValue(":date", currentDate);
                         query.exec();
-                        
+
                         QString statusInfo = "";
                         if (query.next()) {
                             // 今天已存在记录 => 本次算作下班打卡
-                            query.prepare("update attendancetable set outtime = :outtime where empid = :empid and date = :date");
+                            query.prepare("update attendancetable set outtime = :outtime, name = :name, phone = :phone where empid = :empid and date = :date");
                             query.bindValue(":outtime", currentTime.toString("hh:mm:ss"));
+                            query.bindValue(":name", empNameMap.value(index, "Unknown"));
+                            query.bindValue(":phone", empPhoneMap.value(index, "Unknown"));
                             query.bindValue(":empid", empId);
                             query.bindValue(":date", currentDate);
                             query.exec();
-                            
+
                             // 早退判断（假如规定18:00下班，为了测试早退效果也可以设其他时间，这里设为18:00标准）
                             if (currentTime < QTime(18, 0, 0)) {
                                 statusInfo = "（下班）早退打卡成功！打卡时间：" + currentTime.toString("hh:mm:ss");
@@ -305,8 +359,10 @@ void MainWindow::recvClientMsg()
                             }
                         } else {
                             // 今天不存在记录 => 上班打卡
-                            query.prepare("insert into attendancetable (empid, date, intime, outtime) values (:empid, :date, :intime, '')");
+                            query.prepare("insert into attendancetable (empid, name, phone, date, intime, outtime) values (:empid, :name, :phone, :date, :intime, '')");
                             query.bindValue(":empid", empId);
+                            query.bindValue(":name", empNameMap.value(index, "Unknown"));
+                            query.bindValue(":phone", empPhoneMap.value(index, "Unknown"));
                             query.bindValue(":date", currentDate);
                             query.bindValue(":intime", currentTime.toString("hh:mm:ss"));
                             query.exec();
@@ -375,6 +431,11 @@ void MainWindow::recvClientMsg()
 
             QPushButton *btn = new QPushButton(showText);
             btn->setFixedHeight(40);
+            
+            // 为按钮安装跑马灯悬停滚动过滤器
+            if (!globalMarqueeFilter) globalMarqueeFilter = new HoverMarqueeFilter(this);
+            btn->installEventFilter(globalMarqueeFilter);
+
             btn->setStyleSheet(R"(
                                QPushButton {
                                text-align: left;
@@ -557,8 +618,8 @@ void MainWindow::recvClientMsg()
                         return;
                     }
 
-                    QString askleavename = msglist.at(5);
-                    QString askleavephone = msglist.at(6);
+                    QString askleavename = empNameMap.value(index, msglist.size() > 5 ? msglist.at(5) : "Unknown");
+                    QString askleavephone = empPhoneMap.value(index, msglist.size() > 6 ? msglist.at(6) : "Unknown");
                     QString startime = msglist.at(1);
                     QString endtime = msglist.at(2);
                     QString leaveType=msglist.at(3);
@@ -572,6 +633,10 @@ void MainWindow::recvClientMsg()
 
                     QPushButton *btn = new QPushButton(showText, this); // 指定父对象，自动回收
                     btn->setFixedHeight(40);
+
+                    // 为员工请假按钮也安装跑马灯悬停滚动过滤器
+                    if (!globalMarqueeFilter) globalMarqueeFilter = new HoverMarqueeFilter(this);
+                    btn->installEventFilter(globalMarqueeFilter);
 
                     btn->setStyleSheet(R"(
                     QPushButton {
