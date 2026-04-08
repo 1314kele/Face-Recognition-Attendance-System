@@ -366,15 +366,6 @@ void MainWindow::recvClientMsg()
             }
 
 
-            // 收到图片后触发API接口上传照片和身份证号，并在回调中提取 similarity！
-            uploadToApi(nameStr, imgBytes, idcarStr, [=](double similarity) {
-                // 这个大括号里的代码，就是阿里云响应成功后才会执行的代码！
-                // 将相似度直接存储在按钮的属性中，方便点击时提取判断
-                //                btn->setProperty("similarity", similarity);
-                // 展示在按钮的文字上
-                //                btn->setText(btn->text() + QString(" | 相似度: %1%").arg(similarity));
-            });
-
             QString showText = QString("【新员工】IP:%1 端口:%2 | 姓名:%3  电话:%4  身份证:%5")
                     .arg(ip)
                     .arg(port)
@@ -394,6 +385,15 @@ void MainWindow::recvClientMsg()
                                }
                                )");
 
+            // 收到图片后触发API接口上传照片和身份证号，并在回调中提取 similarity！
+            uploadToApi(nameStr, imgBytes, idcarStr, [=](double similarity) {
+                // 这个大括号里的代码，就是阿里云响应成功后才会执行的代码！
+                // 将相似度直接存储在按钮的属性中，方便点击时提取判断
+                btn->setProperty("similarity", similarity);
+                // 展示在按钮的文字上
+                btn->setText(btn->text() + QString(" | 相似度: %1%").arg(similarity));
+            });
+
             QListWidgetItem *item = new QListWidgetItem();
             item->setSizeHint(QSize(0, 40));
             ui->infList->addItem(item);
@@ -407,15 +407,12 @@ void MainWindow::recvClientMsg()
                 double similarity = btn->property("similarity").toDouble();
 
                 // 【核心新增需求】如果相似度低于 80 分（或者没有成功获取为 0分），则强制弹窗警告
-                // 【免计费修改】暂时注释掉该验证，由于API被跳过，直接默认信任，不弹窗中断流程
-                /*
                 if (similarity < 80.0) {
                     QMessageBox::warning(this, "⚠️ 安全警告",
                         QString("注意！该员工（%1）提交的人脸与身份证相似度极低：\n"
                                 "相似度仅为：%2%\n\n"
                                 "请后台管理员人工仔细审核！").arg(nameStr).arg(similarity));
                 }
-                */
 
                 RegAuditDialog d(this);
                 d.ip = ip;
@@ -679,13 +676,7 @@ void MainWindow::recvClientMsg()
 
 void MainWindow::uploadToApi(const QString &name, const QByteArray &imageBytes, QString &idcar, std::function<void(double)> callback)
 {
-    // 【免计费修改】暂时屏蔽真实的 API 调用，直接返回一个高分相似度，跳过验证
-    if (callback) {
-        callback(99.9); // 模拟返回 99.9% 相似度
-    }
-    return;
-
-    //供应商：杭州快证签科技有限公司 (如果是这家的话，请核对API路径和参数)
+    // 恢复为最初的 API (如果域名变了请自行将 zfa.market... 替换掉)
     QUrl myUrl("http://zfa.market.alicloudapi.com/efficient/idfaceIdentity");
 
     QNetworkRequest myRequest(myUrl);
@@ -698,13 +689,16 @@ void MainWindow::uploadToApi(const QString &name, const QByteArray &imageBytes, 
     // QUrlQuery表示POST请求的查询条件
     QUrlQuery postData;
 
-    // 极其重要的修复：根据你刚发的阿里云接口文档，参数名必须严格照着文档写！
-    postData.addQueryItem("idcar", idcar); // 文档中叫 number，不是 idcard---------------------记得改回来
-    postData.addQueryItem("name", name);    // 文档中叫 name
+    // 根据最开始的接口文档，字段名为 number、name 和 base64Str
+    postData.addQueryItem("number", idcar);
+    postData.addQueryItem("name", name);
     
-    // 文档里说直接传base64，并且字段名叫做 base64Str
+    // QUrlQuery.query(QUrl::FullyEncoded)会自动进行URL编码，不要事先用toPercentEncoding双重编码！
     QString base64String = QString::fromUtf8(imageBytes.toBase64());
-    postData.addQueryItem("base64Str", QUrl::toPercentEncoding(base64String));
+    postData.addQueryItem("base64Str", base64String);
+
+    postData.addQueryItem("liveChk", "0");
+    postData.addQueryItem("Threshold", "0.33");
 
     // 使用 myManager 发送网络请求，并且把结果的信号槽连接好，这样才能触发你的 fun() 打印应答！
     QNetworkReply *reply = myManager.post(myRequest, postData.query(QUrl::FullyEncoded).toUtf8());
@@ -721,17 +715,20 @@ void MainWindow::uploadToApi(const QString &name, const QByteArray &imageBytes, 
                 QJsonObject root = doc.object();
                 double similarity = 0.0;
                 
-                // 根据具体厂商返回的 JSON 结构，这里假设相似度在根节点或者 data 节点里。
-                // 如果在 { "data": { "similarity": 88.5 } }
-                if(root.contains("data") && root["data"].isObject()) {
-                    QJsonObject data = root["data"].toObject();
-                    if(data.contains("similarity")) {
-                        similarity = data["similarity"].toDouble();
+                // 最开始的 JSON 结构: { "result": { "Similarity": 992 } }
+                if(root.contains("result") && root["result"].isObject()) {
+                    QJsonObject resultObj = root["result"].toObject();
+                    if(resultObj.contains("Similarity")) {
+                        if (resultObj["Similarity"].isString()) similarity = resultObj["Similarity"].toString().toDouble();
+                        else similarity = resultObj["Similarity"].toDouble();
                     }
-                } else if(root.contains("similarity")) {
-                    similarity = root["similarity"].toDouble();
                 }
                 
+                // 最初API返回的返回值为类似 992 这种千分制分数（>100），转换为百分制
+                if(similarity > 100.0) {
+                    similarity = similarity / 10.0; 
+                }
+
                 // 将该值传回给前面的调用者
                 if(callback) { callback(similarity); }
             }
